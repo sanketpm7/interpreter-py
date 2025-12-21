@@ -21,6 +21,13 @@ class Lexer:
         if self.ch in [" ", "\t", "\n", "\r"]:
             self.read_char()
 
+    def read_identifier(self) -> str:
+        """let x"""
+        start_position = self.position
+        while is_letter(self.ch):
+            self.read_char()
+        return self.input[start_position:self.position]
+
     def read_number(self) -> str:
         start_position = self.position
         while is_digit(self.ch):
@@ -35,6 +42,26 @@ class Lexer:
         match self.ch:
             case '=':
                 tok = token.Token(token.ASSIGN, self.ch)
+            case '=':
+                tok = token.Token(token.ASSIGN, self.ch)
+            case '+':
+                tok = token.Token(token.PLUS, self.ch)
+            case '-':
+                tok = token.Token(token.MINUS, self.ch)
+            case '!':
+                tok = token.Token(token.BANG, self.ch)
+            case '/':
+                tok = token.Token(token.SLASH, self.ch)
+            case '*':
+                tok = token.Token(token.ASTERISK, self.ch)
+            case '<':
+                tok = token.Token(token.LT, self.ch)
+            case '>':
+                tok = token.Token(token.GT, self.ch)
+            case ';':
+                tok = token.Token(token.SEMICOLON, self.ch)
+            case ',':
+                tok = token.Token(token.COMMA, self.ch)
             case ';':
                 tok = token.Token(token.SEMICOLON, self.ch)
             case '(':
@@ -66,12 +93,6 @@ class Lexer:
         self.read_char()
         return tok
 
-    def read_identifier(self) -> str:
-        """let x"""
-        start_position = self.position
-        while is_letter(self.ch):
-            self.read_char()
-        return self.input[start_position:self.position]
 
 def is_letter(ch: str) -> bool:
     return (

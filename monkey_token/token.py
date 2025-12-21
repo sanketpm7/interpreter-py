@@ -1,47 +1,28 @@
 # Special types
-"""
-Tokens are the individual chars in the input
-
-Every character or group of characters can belong to one of the
-categories below
-
-1. ILLEGAL
-    - special symbols (!@#$%..) - monkey language does not allow these chars
-2. EOF
-    - denotes the end of file 
-3. IDENT
-    - identifiers variable names var_name, func_name, ..
-4. INT          - 5/10/.
-
--- OPERATORS
-5. ASSIGN       - =
-6. PLUS         - +
-
--- DELIMITERS --
-7. COMMA        - ,
-8. SEMICOLON    - ;
-9. LPAREN       - (
-10. RPAREN      - )
-11. LBRACE      - {
-12. RBRACE      - }
-
--- KEYWORDS[RESERVED WORDS] --
-13. FUNCTION
-14. LET         - let
-"""
-
 ILLEGAL = "ILLEGAL"
 EOF = "EOF"
 IDENT = "IDENT"
 INT = "INT"
+
+# OPERATORS
 ASSIGN = "="
 PLUS = "+"
+MINUS = "-"
+BANG = "!"
+ASTERISK = "*"
+SLASH = "/"
+LT = "<"
+GT = ">"
+
+# OPERATORS
 COMMA = ","
 SEMICOLON = ";"
 LPAREN = "("
 RPAREN = ")"
 LBRACE = "{"
 RBRACE = "}"
+
+# KEYWORDS 
 FUNCTION = "FUNCTION"
 LET = "LET"
 

@@ -2,11 +2,20 @@ import pytest
 from lexer.lexer import Lexer
 from monkey_token.token import (
     LET,
+    FUNCTION,
+
     IDENT,
     INT,
-    FUNCTION,
+
     ASSIGN,
     PLUS,
+    MINUS,
+    BANG,
+    ASTERISK,
+    SLASH,
+    LT,
+    GT,
+
     LPAREN,
     RPAREN,
     LBRACE,
@@ -121,3 +130,32 @@ let result = add(five, ten);""")
         assert tok.Literal == expected_literal, \
                 f"test[{i}] - token Literal wrong. expected={expected_literal}, got={tok.Literal}"
 
+
+def test_next_token4():
+    input_text = "!-/*5; 5 < 10 > 5;"
+    tests = [
+        (BANG, "!"),
+        (MINUS, "-"),
+        (SLASH, "/"),
+        (ASTERISK, "*"),
+        (INT, "5"),
+        (SEMICOLON, ";"),
+        (INT, "5"),
+        (LT, "<"),
+        (INT, "10"),
+        (GT, ">"),
+        (INT, "5"),
+        (SEMICOLON, ";"),
+    ]
+
+    lex = Lexer(input_text)
+
+    for i, (expected_type, expected_literal) in enumerate(tests):
+        tok = lex.next_token()
+        print(tok.Type, tok.Literal)
+
+        assert tok.Type == expected_type, \
+                f"tests[{i}] - token type wrong. expected='{expected_type}', got='{tok.Type}'"
+
+        assert tok.Literal == expected_literal, \
+                f"tests[{i}] - literal wrong. expected='{expected_literal}', got='{tok.Literal}'"
