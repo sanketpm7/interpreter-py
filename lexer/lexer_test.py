@@ -3,7 +3,11 @@ from lexer.lexer import Lexer
 from monkey_token.token import (
     LET,
     FUNCTION,
-
+    TRUE,
+    FALSE,
+    IF,
+    ELSE,
+    RETURN,
     IDENT,
     INT,
 
@@ -64,7 +68,6 @@ def test_next_token2():
 
     for i, (expected_type, expected_literal) in enumerate(tests):
         tok = lex.next_token()
-        print(tok.Type, tok.Literal)
 
         assert tok.Type == expected_type, \
                 f"tests[{i}] - token type wrong. expected='{expected_type}', got='{tok.Type}'"
@@ -74,12 +77,15 @@ def test_next_token2():
 
 def test_next_token3():
     input = (
-"""let five = 5;
-let ten = 10;
-let add = fn(x, y) {
-x + y;
-};
-let result = add(five, ten);""")
+        """
+        let five = 5;
+        let ten = 10;
+        let add = fn(x, y) {
+            x + y;
+        };
+        let result = add(five, ten);
+        """
+    )
 
     tests = [
         (LET, "let"),
@@ -152,7 +158,47 @@ def test_next_token4():
 
     for i, (expected_type, expected_literal) in enumerate(tests):
         tok = lex.next_token()
-        print(tok.Type, tok.Literal)
+
+        assert tok.Type == expected_type, \
+                f"tests[{i}] - token type wrong. expected='{expected_type}', got='{tok.Type}'"
+
+        assert tok.Literal == expected_literal, \
+                f"tests[{i}] - literal wrong. expected='{expected_literal}', got='{tok.Literal}'"
+
+def test_next_token5():
+    """Added new keyword token - if, else, return, true, false."""
+    input_text = (
+    """
+    if (5 < 10) {
+        return true;
+    } else {
+        return false;
+    }
+    """)
+    tests = [
+        (IF, "if"),
+        (LPAREN, "("),
+        (INT, "5"),
+        (LT, "<"),
+        (INT, "10"),
+        (RPAREN, ")"),
+        (LBRACE, "{"),
+        (RETURN, "return"),
+        (TRUE, "true"),
+        (SEMICOLON, ";"),
+        (RBRACE, "}"),
+        (ELSE, "else"),
+        (LBRACE, "{"),
+        (RETURN, "return"),
+        (FALSE, "false"),
+        (SEMICOLON, ";"),
+        (RBRACE, "}"),
+    ]
+
+    lex = Lexer(input_text)
+
+    for i, (expected_type, expected_literal) in enumerate(tests):
+        tok = lex.next_token()
 
         assert tok.Type == expected_type, \
                 f"tests[{i}] - token type wrong. expected='{expected_type}', got='{tok.Type}'"

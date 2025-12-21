@@ -18,7 +18,7 @@ class Lexer:
         self.readPosition += 1
 
     def skip_whitespace(self) -> None:
-        if self.ch in [" ", "\t", "\n", "\r"]:
+        while self.ch in [" ", "\t", "\n", "\r"]:
             self.read_char()
 
     def read_identifier(self) -> str:
