@@ -19,6 +19,8 @@ from monkey_token.token import (
     SLASH,
     LT,
     GT,
+    EQ,
+    NOT_EQ,
 
     LPAREN,
     RPAREN,
@@ -200,6 +202,35 @@ def test_next_token5():
     for i, (expected_type, expected_literal) in enumerate(tests):
         tok = lex.next_token()
 
+        assert tok.Type == expected_type, \
+                f"tests[{i}] - token type wrong. expected='{expected_type}', got='{tok.Type}'"
+
+        assert tok.Literal == expected_literal, \
+                f"tests[{i}] - literal wrong. expected='{expected_literal}', got='{tok.Literal}'"
+
+
+def test_next_token6():
+    """Added new token - == & !=."""
+    input_text = (
+    """
+    10 == 10;
+    10 != 9;
+    """)
+    tests = [
+        (INT, "10"),
+        (EQ, "=="),
+        (INT, "10"),
+        (SEMICOLON, ";"),
+        (INT, "10"),
+        (NOT_EQ, "!="),
+        (INT, "9"),
+        (SEMICOLON, ";"),
+    ]
+
+    lex = Lexer(input_text)
+
+    for i, (expected_type, expected_literal) in enumerate(tests):
+        tok = lex.next_token()
         assert tok.Type == expected_type, \
                 f"tests[{i}] - token type wrong. expected='{expected_type}', got='{tok.Type}'"
 

@@ -34,22 +34,36 @@ class Lexer:
             self.read_char()
         return self.input[start_position: self.position]
 
+    def peek_char(self) -> str:
+        """ `peek` ahead in the input and not move around in it."""
+        if self.readPosition >= len(self.input):
+            return None
+        return self.input[self.readPosition]
+
     def next_token(self) -> token.Token:
         tok = token.Token()
-        
+
         self.skip_whitespace()
 
         match self.ch:
             case '=':
-                tok = token.Token(token.ASSIGN, self.ch)
-            case '=':
-                tok = token.Token(token.ASSIGN, self.ch)
+                if self.peek_char() == "=":
+                    ch = self.ch
+                    self.read_char()
+                    tok = token.Token(token.EQ, ch+self.ch) # ==
+                else:
+                    tok = token.Token(token.ASSIGN, self.ch)
             case '+':
                 tok = token.Token(token.PLUS, self.ch)
             case '-':
                 tok = token.Token(token.MINUS, self.ch)
             case '!':
-                tok = token.Token(token.BANG, self.ch)
+                if self.peek_char() == "=":
+                    ch = self.ch
+                    self.read_char()
+                    tok = token.Token(token.NOT_EQ, ch+self.ch) # !=
+                else:
+                    tok = token.Token(token.BANG, self.ch)
             case '/':
                 tok = token.Token(token.SLASH, self.ch)
             case '*':
