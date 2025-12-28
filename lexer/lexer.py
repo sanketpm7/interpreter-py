@@ -1,4 +1,4 @@
-import monkey_token.token as token
+from monkey_token.token import TokenType, Token
 
 class Lexer:
     def __init__(self, input: str):
@@ -40,7 +40,7 @@ class Lexer:
             return None
         return self.input[self.readPosition]
 
-    def next_token(self) -> token.Token:
+    def next_token(self) -> Token:
         tok = None
 
         self.skip_whitespace()
@@ -50,62 +50,63 @@ class Lexer:
                 if self.peek_char() == "=":
                     ch = self.ch
                     self.read_char()
-                    tok = token.Token(token.EQ, ch+self.ch) # ==
+                    tok = Token(TokenType.EQ, ch+self.ch) # ==
                 else:
-                    tok = token.Token(token.ASSIGN, self.ch)
+                    tok = Token(TokenType.ASSIGN, self.ch)
             case '+':
-                tok = token.Token(token.PLUS, self.ch)
+                tok = Token(TokenType.PLUS, self.ch)
             case '-':
-                tok = token.Token(token.MINUS, self.ch)
+                tok = Token(TokenType.MINUS, self.ch)
             case '!':
                 if self.peek_char() == "=":
                     ch = self.ch
                     self.read_char()
-                    tok = token.Token(token.NOT_EQ, ch+self.ch) # !=
+                    tok = Token(TokenType.NOT_EQ, ch+self.ch) # !=
                 else:
-                    tok = token.Token(token.BANG, self.ch)
+                    tok = Token(TokenType.BANG, self.ch)
             case '/':
-                tok = token.Token(token.SLASH, self.ch)
+                tok = Token(TokenType.SLASH, self.ch)
             case '*':
-                tok = token.Token(token.ASTERISK, self.ch)
+                tok = Token(TokenType.ASTERISK, self.ch)
             case '<':
-                tok = token.Token(token.LT, self.ch)
+                tok = Token(TokenType.LT, self.ch)
             case '>':
-                tok = token.Token(token.GT, self.ch)
+                tok = Token(TokenType.GT, self.ch)
             case ';':
-                tok = token.Token(token.SEMICOLON, self.ch)
+                tok = Token(TokenType.SEMICOLON, self.ch)
             case ',':
-                tok = token.Token(token.COMMA, self.ch)
+                tok = Token(TokenType.COMMA, self.ch)
             case ';':
-                tok = token.Token(token.SEMICOLON, self.ch)
+                tok = Token(TokenType.SEMICOLON, self.ch)
             case '(':
-                tok = token.Token(token.LPAREN, self.ch)
+                tok = Token(TokenType.LPAREN, self.ch)
             case ')':
-                tok = token.Token(token.RPAREN, self.ch)
+                tok = Token(TokenType.RPAREN, self.ch)
             case ',':
-                tok = token.Token(token.COMMA, self.ch)
+                tok = Token(TokenType.COMMA, self.ch)
             case '+':
-                tok = token.Token(token.PLUS, self.ch)
+                tok = Token(TokenType.PLUS, self.ch)
             case '{':
-                tok = token.Token(token.LBRACE, self.ch)
+                tok = Token(TokenType.LBRACE, self.ch)
             case '}':
-                tok = token.Token(token.RBRACE, self.ch)
+                tok = Token(TokenType.RBRACE, self.ch)
             case None:
-                # EOF has no specific Literal(char/str) to denote it - hence useing "" (empty string)
-                tok = token.Token(token.EOF, "")
+                # EOF has no specific Literal(char/str)
+                # denoted it - hence using "EOF"
+                tok = Token(TokenType.EOF, "")
             case _:
                 if is_letter(self.ch):
                     token_literal = self.read_identifier()
-                    token_type = token.lookup_identifer(token_literal)
-                    tok = token.Token(token_type, token_literal)
+                    token_type = TokenType.lookup_identifer(token_literal)
+                    tok = Token(token_type, token_literal)
                     return tok
                 elif is_digit(self.ch):
-                    token_type = token.INT
+                    token_type = TokenType.INT
                     token_literal = self.read_number()
-                    tok = token.Token(token_type, token_literal)
+                    tok = Token(token_type, token_literal)
                     return tok
                 else:
-                    tok = token.Token(token.ILLEGAL, self.ch)
+                    tok = Token(TokenType.ILLEGAL, self.ch)
         self.read_char()
         return tok
 

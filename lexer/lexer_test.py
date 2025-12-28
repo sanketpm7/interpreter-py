@@ -1,48 +1,20 @@
 import pytest
 from lexer.lexer import Lexer
-from monkey_token.token import (
-    LET,
-    FUNCTION,
-    TRUE,
-    FALSE,
-    IF,
-    ELSE,
-    RETURN,
-    IDENT,
-    INT,
+from monkey_token.token import TokenType
 
-    ASSIGN,
-    PLUS,
-    MINUS,
-    BANG,
-    ASTERISK,
-    SLASH,
-    LT,
-    GT,
-    EQ,
-    NOT_EQ,
-
-    LPAREN,
-    RPAREN,
-    LBRACE,
-    RBRACE,
-    COMMA,
-    SEMICOLON,
-    EOF,
-)
 
 def test_next_token1():
     input_text = "=+(){},;"
     tests = [
-        (ASSIGN, "="),
-        (PLUS, "+"),
-        (LPAREN, "("),
-        (RPAREN, ")"),
-        (LBRACE, "{"),
-        (RBRACE, "}"),
-        (COMMA, ","),
-        (SEMICOLON, ";"),
-        (EOF, ""),
+        (TokenType.ASSIGN, "="),
+        (TokenType.PLUS, "+"),
+        (TokenType.LPAREN, "("),
+        (TokenType.RPAREN, ")"),
+        (TokenType.LBRACE, "{"),
+        (TokenType.RBRACE, "}"),
+        (TokenType.COMMA, ","),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.EOF, ""),
     ]
 
     lex = Lexer(input_text)
@@ -59,11 +31,11 @@ def test_next_token1():
 def test_next_token2():
     input_text = "let x = 10;"
     tests = [
-        (LET, "let"),
-        (IDENT, "x"),
-        (ASSIGN, "="),
-        (INT, "10"),
-        (SEMICOLON, ";"),
+        (TokenType.LET, "let"),
+        (TokenType.IDENT, "x"),
+        (TokenType.ASSIGN, "="),
+        (TokenType.INT, "10"),
+        (TokenType.SEMICOLON, ";"),
     ]
 
     lex = Lexer(input_text)
@@ -90,43 +62,43 @@ def test_next_token3():
     )
 
     tests = [
-        (LET, "let"),
-        (IDENT, "five"),
-        (ASSIGN, "="),
-        (INT, "5"),
-        (SEMICOLON, ";"),
-        (LET, "let"),
-        (IDENT, "ten"),
-        (ASSIGN, "="),
-        (INT, "10"),
-        (SEMICOLON, ";"),
-        (LET, "let"),
-        (IDENT, "add"),
-        (ASSIGN, "="),
-        (FUNCTION, "fn"),
-        (LPAREN, "("),
-        (IDENT, "x"),
-        (COMMA, ","),
-        (IDENT, "y"),
-        (RPAREN, ")"),
-        (LBRACE, "{"),
-        (IDENT, "x"),
-        (PLUS, "+"),
-        (IDENT, "y"),
-        (SEMICOLON, ";"),
-        (RBRACE, "}"),
-        (SEMICOLON, ";"),
-        (LET, "let"),
-        (IDENT, "result"),
-        (ASSIGN, "="),
-        (IDENT, "add"),
-        (LPAREN, "("),
-        (IDENT, "five"),
-        (COMMA, ","),
-        (IDENT, "ten"),
-        (RPAREN, ")"),
-        (SEMICOLON, ";"),
-        (EOF, "")
+        (TokenType.LET, "let"),
+        (TokenType.IDENT, "five"),
+        (TokenType.ASSIGN, "="),
+        (TokenType.INT, "5"),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.LET, "let"),
+        (TokenType.IDENT, "ten"),
+        (TokenType.ASSIGN, "="),
+        (TokenType.INT, "10"),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.LET, "let"),
+        (TokenType.IDENT, "add"),
+        (TokenType.ASSIGN, "="),
+        (TokenType.FUNCTION, "fn"),
+        (TokenType.LPAREN, "("),
+        (TokenType.IDENT, "x"),
+        (TokenType.COMMA, ","),
+        (TokenType.IDENT, "y"),
+        (TokenType.RPAREN, ")"),
+        (TokenType.LBRACE, "{"),
+        (TokenType.IDENT, "x"),
+        (TokenType.PLUS, "+"),
+        (TokenType.IDENT, "y"),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.RBRACE, "}"),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.LET, "let"),
+        (TokenType.IDENT, "result"),
+        (TokenType.ASSIGN, "="),
+        (TokenType.IDENT, "add"),
+        (TokenType.LPAREN, "("),
+        (TokenType.IDENT, "five"),
+        (TokenType.COMMA, ","),
+        (TokenType.IDENT, "ten"),
+        (TokenType.RPAREN, ")"),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.EOF, "")
     ]
 
     lex = Lexer(input)
@@ -142,18 +114,18 @@ def test_next_token3():
 def test_next_token4():
     input_text = "!-/*5; 5 < 10 > 5;"
     tests = [
-        (BANG, "!"),
-        (MINUS, "-"),
-        (SLASH, "/"),
-        (ASTERISK, "*"),
-        (INT, "5"),
-        (SEMICOLON, ";"),
-        (INT, "5"),
-        (LT, "<"),
-        (INT, "10"),
-        (GT, ">"),
-        (INT, "5"),
-        (SEMICOLON, ";"),
+        (TokenType.BANG, "!"),
+        (TokenType.MINUS, "-"),
+        (TokenType.SLASH, "/"),
+        (TokenType.ASTERISK, "*"),
+        (TokenType.INT, "5"),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.INT, "5"),
+        (TokenType.LT, "<"),
+        (TokenType.INT, "10"),
+        (TokenType.GT, ">"),
+        (TokenType.INT, "5"),
+        (TokenType.SEMICOLON, ";"),
     ]
 
     lex = Lexer(input_text)
@@ -178,23 +150,23 @@ def test_next_token5():
     }
     """)
     tests = [
-        (IF, "if"),
-        (LPAREN, "("),
-        (INT, "5"),
-        (LT, "<"),
-        (INT, "10"),
-        (RPAREN, ")"),
-        (LBRACE, "{"),
-        (RETURN, "return"),
-        (TRUE, "true"),
-        (SEMICOLON, ";"),
-        (RBRACE, "}"),
-        (ELSE, "else"),
-        (LBRACE, "{"),
-        (RETURN, "return"),
-        (FALSE, "false"),
-        (SEMICOLON, ";"),
-        (RBRACE, "}"),
+        (TokenType.IF, "if"),
+        (TokenType.LPAREN, "("),
+        (TokenType.INT, "5"),
+        (TokenType.LT, "<"),
+        (TokenType.INT, "10"),
+        (TokenType.RPAREN, ")"),
+        (TokenType.LBRACE, "{"),
+        (TokenType.RETURN, "return"),
+        (TokenType.TRUE, "true"),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.RBRACE, "}"),
+        (TokenType.ELSE, "else"),
+        (TokenType.LBRACE, "{"),
+        (TokenType.RETURN, "return"),
+        (TokenType.FALSE, "false"),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.RBRACE, "}"),
     ]
 
     lex = Lexer(input_text)
@@ -217,14 +189,14 @@ def test_next_token6():
     10 != 9;
     """)
     tests = [
-        (INT, "10"),
-        (EQ, "=="),
-        (INT, "10"),
-        (SEMICOLON, ";"),
-        (INT, "10"),
-        (NOT_EQ, "!="),
-        (INT, "9"),
-        (SEMICOLON, ";"),
+        (TokenType.INT, "10"),
+        (TokenType.EQ, "=="),
+        (TokenType.INT, "10"),
+        (TokenType.SEMICOLON, ";"),
+        (TokenType.INT, "10"),
+        (TokenType.NOT_EQ, "!="),
+        (TokenType.INT, "9"),
+        (TokenType.SEMICOLON, ";"),
     ]
 
     lex = Lexer(input_text)
@@ -236,3 +208,4 @@ def test_next_token6():
 
         assert tok.Literal == expected_literal, \
                 f"tests[{i}] - literal wrong. expected='{expected_literal}', got='{tok.Literal}'"
+
