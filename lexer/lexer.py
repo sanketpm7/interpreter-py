@@ -3,7 +3,7 @@ import monkey_token.token as token
 class Lexer:
     def __init__(self, input: str):
         self.input = input
-        self.position = 0       # current char
+        self.position = -1       # current char
         self.readPosition = 0   # next char to process
         self.ch = ""
         self.read_char()
@@ -41,7 +41,7 @@ class Lexer:
         return self.input[self.readPosition]
 
     def next_token(self) -> token.Token:
-        tok = token.Token()
+        tok = None
 
         self.skip_whitespace()
 
@@ -91,16 +91,18 @@ class Lexer:
             case '}':
                 tok = token.Token(token.RBRACE, self.ch)
             case None:
-                tok.Literal = ""
-                tok.Type = token.EOF
+                # EOF has no specific Literal(char/str) to denote it - hence useing "" (empty string)
+                tok = token.Token(token.EOF, "")
             case _:
                 if is_letter(self.ch):
-                    tok.Literal = self.read_identifier()
-                    tok.Type = token.lookup_identifer(tok.Literal)
+                    token_literal = self.read_identifier()
+                    token_type = token.lookup_identifer(token_literal)
+                    tok = token.Token(token_type, token_literal)
                     return tok
                 elif is_digit(self.ch):
-                    tok.Type = token.INT
-                    tok.Literal = self.read_number()
+                    token_type = token.INT
+                    token_literal = self.read_number()
+                    tok = token.Token(token_type, token_literal)
                     return tok
                 else:
                     tok = token.Token(token.ILLEGAL, self.ch)

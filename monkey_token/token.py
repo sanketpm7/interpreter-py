@@ -44,13 +44,18 @@ keywords = {
 }
 
 def lookup_identifer(ident: str) -> str:
-    """ident (str): indentifer string extracted from input."""
+    """
+    ident (str): indentifer string extracted from input.
+
+    To verify in the input string is a reserved-keyword or a variable-name
+    """
     if ident not in keywords:
         return IDENT
     return keywords[ident]
 
 class Token:
-    def __init__(self, Type: str="", Literal: str=""):
+    """Each character of input program is converted to a token."""
+    def __init__(self, Type: str, Literal: str):
         self.Type = Type
         self.Literal = Literal
 
