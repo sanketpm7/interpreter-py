@@ -2,15 +2,6 @@ from lexer.lexer import Lexer
 from monkey_token.token import Token, TokenType
 from monkey_ast.ast import Program, LetStatement, Identifier
 
-# from monkey_token.token import EOF
-
-"""
-type Parser struct {
-    l *lexer.Lexer
-    curToken token.Token
-    peekToken token.Token
-}
-"""
 
 class Parser:
     def __init__(self, lexer: Lexer):
